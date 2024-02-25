@@ -4,6 +4,7 @@ import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import React, { useEffect } from "react";
 
 function ProductBox({
+  key,
   id,
   image,
   name,
@@ -13,13 +14,14 @@ function ProductBox({
   quantity = 0,
   onDelete = () => null,
 }: {
+  key?: string;
   id: number;
   image: string;
   name: string;
   category: string;
   price: string;
-  side: "vertical" | "horizontal";
-  quantity: number;
+  side?: "vertical" | "horizontal";
+  quantity?: number;
   onDelete?: () => void;
 }) {
   const [viewQuantity, setQuantity] = React.useState(quantity);
