@@ -144,7 +144,5 @@ export const products = ({
       category === "*" ? true : item.category === category ? true : false
     );
 
-  console.log(result);
-
   return result;
 };

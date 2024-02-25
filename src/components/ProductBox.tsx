@@ -1,7 +1,7 @@
 "use client";
 
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { useEffect } from "react";
 
 function ProductBox({
   id,
@@ -9,19 +9,39 @@ function ProductBox({
   name,
   category,
   price,
+  side = "vertical",
+  quantity = 0,
+  onDelete = () => null,
 }: {
   id: number;
   image: string;
   name: string;
   category: string;
   price: string;
+  side: "vertical" | "horizontal";
+  quantity: number;
+  onDelete?: () => void;
 }) {
-  const [viewQuantity, setQuantity] = React.useState(0);
+  const [viewQuantity, setQuantity] = React.useState(quantity);
+
+  useEffect(() => {
+    if (viewQuantity < 1 || (viewQuantity as any) == "") {
+      onDelete();
+    }
+  }, [viewQuantity]);
 
   return (
-    <div className="card card-compact min-w-86 max-w-90 bg-base-100 shadow-xl">
+    <div
+      className={`w-full card ${
+        side === "vertical" ? "card-compact" : "lg:card-side"
+      } min-w-86 max-w-90 bg-base-100 shadow-xl`}
+    >
       <figure>
-        <img src={image} alt="Sneaker Image" />
+        <img
+          src={image}
+          alt="Sneaker Image"
+          style={side === "horizontal" ? { height: 180 } : {}}
+        />
       </figure>
       <div className="card-body">
         <div className="flex flex-row items-center justify-between gap-2">
@@ -36,8 +56,17 @@ function ProductBox({
               : "Freeware"}
           </div>
         </div>
-        <div className="flex flex-row items-center justify-between gap-2">
-          <span className="text-2xl font-bold">${price}</span>
+        <div className="w-full flex flex-col items-center justify-between gap-2">
+          <div className="w-full flex flex-row items-center justify-between gap-2">
+            <span className="text-1xl font-bold">
+              <b>Price: </b>${price}
+            </span>
+            {viewQuantity > 0 ? (
+              <span className="text-1xl font-bold">
+                <b>Sub Total: </b>${parseFloat(price) * viewQuantity}
+              </span>
+            ) : null}
+          </div>
           {viewQuantity > 0 ? (
             <div className="join">
               <button
@@ -53,7 +82,7 @@ function ProductBox({
               <input
                 type="number"
                 placeholder="0"
-                className="input text-center input-bordered w-[80px] rounded-none max-w-xs"
+                className="w-full input text-center input-bordered rounded-none max-w-xs"
                 value={viewQuantity}
                 min={1}
                 max={1000}
@@ -72,11 +101,10 @@ function ProductBox({
             </div>
           ) : (
             <div
-              className="btn
-             btn-primary"
+              className="w-full btn btn-primary"
               onClick={() => setQuantity(1)}
             >
-              Buy Now
+              Add To Cart
             </div>
           )}
         </div>

@@ -5,18 +5,17 @@ import React from "react";
 function HeroSection() {
   return (
     <div className="max-w-full flex justify-center items-center p-4 gap-2 flex-row">
-      <div className="flex flex-col justify-center items-start gap-6 w-full">
+      <div className="flex flex-col justify-center items-start gap-6 w-full prose break-words">
         <span className="text-center text-sm font-bold bg-info text-info-content px-4 py-2 rounded-md">
           Sale 70% OFF
         </span>
 
-        <h2 className="text-6xl font-bold">
+        <h2 className="lg:w-[300px] mt-2 mb-2 text-5xl font-bold">
           An Industrial Take on Sneakerwear
         </h2>
-        <p className="text-1xl">
-          Anyone can beat you but no one can
-          <br /> beat your sneaker as long as you wear
-          <br /> Next Walk's.
+        <p className="lg:w-[300px] text-1xl">
+          Streamline your shopping experience with our intuitive e-commerce app,
+          where convenience meets quality..
         </p>
 
         <Link href="/products">

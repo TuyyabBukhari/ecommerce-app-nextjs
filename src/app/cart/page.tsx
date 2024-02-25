@@ -1,54 +1,55 @@
 "use client";
 
-import CartProductBox from "@/components/CartProductBox";
-import { client } from "@/lib/sanityClient";
+import ProductBox from "@/components/ProductBox";
 import { products } from "@/lib/tempDB";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 function Product() {
-  const [viewProducts, setProducts] = useState(products({}));
+  const [viewProducts, setProducts] = useState([]);
 
-  // const getAllProducts = async () => {
-  //   try {
-  //     const result = await client.fetch(
-  //       `*[_type == "product"]{_id, title, image, price, category}[0..8]`
-  //     );
+  const removeItem = (index: number) => {
+    console.log("1: ", viewProducts);
+    let tempProducts = [...viewProducts];
+    tempProducts.splice(index, 1);
+    setProducts(tempProducts);
+    console.log("2: ", tempProducts);
+  };
 
-  //     setProducts(result);
-  //   } catch (e: any) {
-  //     console.error("Error fetching products:", e.message);
-  //   }
-  // };
+  React.useEffect(() => {
+    console.log("3", viewProducts);
+  }, [viewProducts]);
 
-  // useEffect(() => {
-  //   getAllProducts();
-  // }, []);
+  React.useEffect(() => {
+    setProducts(products({ maxItems: 3 }));
+  }, []);
 
   return (
-    <div className="w-full flex justify-center items-start p-4 gap-2 flex-row">
+    <div className="w-full flex justify-center items-start p-4 gap-2 flex-col lg:flex-row">
       <div className="w-full flex justify-center items-start p-4 gap-2 flex-col">
         <h2 className="px-5 py-5 text-3xl font-bold text-primary-content">
           Shoping Cart
         </h2>
         <div className="w-full flex flex-col justify-center items-center gap-4">
-          {viewProducts.map((product: any, index: number) =>
-            index < 3 ? (
-              <CartProductBox
-                key={`productSection_product_${index}`}
-                quantity={Math.round(Math.random() * 10)}
-                name={product.title}
-                category={product.category}
-                price={product.price}
-                id={product._id}
-                image={product.image}
-              />
-            ) : null
-          )}
+          {viewProducts.map((product: any, index: number) => (
+            <ProductBox
+              side="horizontal"
+              key={`productSection_product_${index}`}
+              quantity={Math.round(Math.random() * 10)}
+              name={product.title}
+              category={product.category}
+              price={product.price}
+              id={product._id}
+              image={product.image}
+              onDelete={() => {
+                removeItem(index);
+              }}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="w-2/5 flex justify-center items-start p-4 gap-2 flex-col">
+      <div className="w-full lg:w-2/5 flex justify-center items-start p-4 gap-2 flex-col">
         <h2 className="px-5 py-5 text-3xl font-bold text-primary-content">
           Order Summary
         </h2>
@@ -81,7 +82,10 @@ function Product() {
             <span>$999</span>
           </div>
 
-          <a href="https://checkout.stripe.com/c/pay/cs_test_a1Y8VmGJB7YpLofAAPVtHZV7C4XFgUkfBFxIg6VUKmInYmEGMfwdVWHitO#fidkdWxOYHwnPyd1blpxYHZxWjA0SXx8bG9NZ2hddHN1fG1hZGdJd2pDUF1qRjc1c3xOUVFPclxgNXFxRHxBSEptNT1gdVJTcWRwfU5NZ1NJbWdcfWRnYHFvcEhDQHAwTzNQTlRWT2NvNGZsNTVAQFNDdWlfSScpJ2hsYXYnP34nYnBsYSc%2FJ2MyZDFhPWM3KDVgNmMoMTM9PCg9NjIyKDEzMTQzZGFgYWRhPD0xYzQ8NycpJ2hwbGEnPyc3MjBgMzc0PCg9NmE8KDE9NDEoZD02NCg1ZDdgMzw1MzcxMGBgZGcwMmMnKSd2bGEnPydjMzwzZDFkPSg0NjMwKDE1Y2coPGE3MihnMTc9PGRgYzJjYDFgNDYxMjMneCknZ2BxZHYnP15YKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSd3YGNgd3dgd0p3bGJsayc%2FJ21xcXV2PyoqY3BpaSh2cWRmbihgZmpoaGB3ZmAoZmlqcW1sa2IocmBnK3Ngd2ZgaStkdXUneCUl">
+          <a
+            className="w-full"
+            href="https://checkout.stripe.com/c/pay/cs_test_a1Y8VmGJB7YpLofAAPVtHZV7C4XFgUkfBFxIg6VUKmInYmEGMfwdVWHitO#fidkdWxOYHwnPyd1blpxYHZxWjA0SXx8bG9NZ2hddHN1fG1hZGdJd2pDUF1qRjc1c3xOUVFPclxgNXFxRHxBSEptNT1gdVJTcWRwfU5NZ1NJbWdcfWRnYHFvcEhDQHAwTzNQTlRWT2NvNGZsNTVAQFNDdWlfSScpJ2hsYXYnP34nYnBsYSc%2FJ2MyZDFhPWM3KDVgNmMoMTM9PCg9NjIyKDEzMTQzZGFgYWRhPD0xYzQ8NycpJ2hwbGEnPyc3MjBgMzc0PCg9NmE8KDE9NDEoZD02NCg1ZDdgMzw1MzcxMGBgZGcwMmMnKSd2bGEnPydjMzwzZDFkPSg0NjMwKDE1Y2coPGE3MihnMTc9PGRgYzJjYDFgNDYxMjMneCknZ2BxZHYnP15YKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSd3YGNgd3dgd0p3bGJsayc%2FJ21xcXV2PyoqY3BpaSh2cWRmbihgZmpoaGB3ZmAoZmlqcW1sa2IocmBnK3Ngd2ZgaStkdXUneCUl"
+          >
             <button className="w-full btn btn-primary">Checkout</button>
           </a>
         </div>

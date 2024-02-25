@@ -1,7 +1,6 @@
 "use client";
 
 import ProductBox from "@/components/ProductBox";
-import { client } from "@/lib/sanityClient";
 import { products } from "@/lib/tempDB";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -13,21 +12,6 @@ function ProductSection() {
     })
   );
 
-  // const getAllProducts = async () => {
-  //   try {
-  //     const result = await client.fetch(
-  //       `*[_type == "product"]{_id, title, image, price, category}[0..8]`
-  //     );
-
-  //     setProducts(result);
-  //   } catch (e: any) {
-  //     console.error("Error fetching products:", e.message);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getAllProducts();
-  // }, []);
   return (
     <div className="min-w-full flex justify-center items-center p-4 gap-2 flex-col">
       <div className="flex justify-center items-center p-4 gap-2 flex-col">

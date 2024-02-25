@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        APP_NAME: "Next Walk"
+        APP_NAME: "E-Commerce App"
     }
 };
 
